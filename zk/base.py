@@ -795,14 +795,14 @@ class ZK(object):
             if not group_id:
                 group_id = 0
             try:
-                command_string = pack('HB5s8sIxBHI', uid, privilege, password.encode(self.encoding, errors='ignore'), name.encode(self.encoding, errors='ignore'), card, int(group_id), 0, int(user_id))
+                command_string = pack('HB5s8sIxBHI', uid, privilege, password.encode(self.encoding, errors='ignore'), name.encode(self.encoding, errors='ignore'), int(card) int(group_id), 0, int(user_id))
             except Exception as e:
                 if self.verbose: print("s_h Error pack: %s" % e)
                 if self.verbose: print("Error pack: %s" % sys.exc_info()[0])
                 raise ZKErrorResponse("Can't pack user")
         else:
             name_pad = name.encode(self.encoding, errors='ignore').ljust(24, b'\x00')[:24]
-            card_str = pack('i', int(card))[:4]
+            card_str = pack('I', int(card))[:4]
             command_string = pack('HB8s24s4sx7sx24s', uid, privilege, password.encode(self.encoding, errors='ignore'), name_pad, card_str, group_id.encode(), user_id.encode())
         response_size = 1024 #TODO check response?
         cmd_response = self.__send_command(command, command_string, response_size)
