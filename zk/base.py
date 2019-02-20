@@ -795,7 +795,7 @@ class ZK(object):
             if not group_id:
                 group_id = 0
             try:
-                command_string = pack('HB5s8sIxBHI', uid, privilege, password.encode(self.encoding, errors='ignore'), name.encode(self.encoding, errors='ignore'), card, int(group_id), 0, int(user_id))
+                command_string = pack('HB5s8sIxBHI', uid, privilege, password.encode(self.encoding, errors='ignore'), name.encode(self.encoding, errors='ignore'), int(card), int(group_id), 0, int(user_id))
             except Exception as e:
                 if self.verbose: print("s_h Error pack: %s" % e)
                 if self.verbose: print("Error pack: %s" % sys.exc_info()[0])
@@ -934,7 +934,7 @@ class ZK(object):
                 return False
             uid = users[0].uid
         command = const.CMD_DELETE_USER
-        command_string = pack('h', uid)
+        command_string = pack('H', uid)
         cmd_response = self.__send_command(command, command_string)
         if not cmd_response.get('status'):
             raise ZKErrorResponse("Can't delete user")
